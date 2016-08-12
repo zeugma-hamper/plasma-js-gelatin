@@ -1,8 +1,12 @@
 {
   "name": "gelatin",
-  "version": "0.0.9999999",
+  "version": "0.1.0",
   "description": "Bindings for g-speak's libPlasma",
-  "keywords": ["plasma", "g-speak", "oblong"],
+  "keywords": [
+    "plasma",
+    "g-speak",
+    "oblong"
+  ],
   "bugs": "https://github.com/Oblong/gelatin/issues",
   "license": "MIT",
   "author": "Oblong Industries, Inc. <platform.pub@oblong.com>",
@@ -36,5 +40,8 @@
   "engines": {
     "node": ">= 4.2.0"
   },
-  "os": ["darwin", "linux"]
+  "os": [
+    "darwin",
+    "linux"
+  ]
 }
