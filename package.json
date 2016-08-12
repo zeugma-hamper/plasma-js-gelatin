@@ -1,22 +1,40 @@
 {
   "name": "gelatin",
-  "version": "0.1.0",
-  "description": "libPlasma bindings/implementation",
-  "main": "lib/index.js",
+  "version": "0.0.9999999",
+  "description": "Bindings for g-speak's libPlasma",
+  "keywords": ["plasma", "g-speak", "oblong"],
+  "bugs": "https://github.com/Oblong/gelatin/issues",
+  "license": "MIT",
+  "author": "Oblong Industries, Inc. <platform.pub@oblong.com>",
+  "files": [
+    "/src",
+    "/lib",
+    "binding.gyp",
+    "g-seek.py"
+  ],
+  "directories": {
+    "lib": "./lib",
+    "examples": "./examples"
+  },
+  "repository": "https://github.com/Oblong/gelatin",
   "scripts": {
     "doc": "jsdoc -c doc/conf.json -d doc/out lib/*.js",
     "justthetest": "tap test/*.js",
+    "preversion": "npm test",
     "test": "node-gyp build && npm run justthetest",
     "test-debug": "node-gyp build --debug && GELATIN_DEBUG=1 npm run justthetest"
   },
-  "author": "Tom Jakubowski",
-  "license": "MIT",
   "dependencies": {
     "nan": "^2.3.1"
   },
-  "gypfile": true,
   "devDependencies": {
     "jsdoc": "^3.4.0",
     "tap": "^5.4.2"
-  }
+  },
+  "main": "lib/index.js",
+  "gypfile": true,
+  "engines": {
+    "node": ">= 4.2.0"
+  },
+  "os": ["darwin", "linux"]
 }
