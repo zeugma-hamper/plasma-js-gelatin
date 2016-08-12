@@ -1,0 +1,7 @@
+/.dir-locals.el
+/.eslintrc
+/.npmignore
+/build
+/test
+/rtags-reindex.sh
+/*.tgz
