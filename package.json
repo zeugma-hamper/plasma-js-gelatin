@@ -20,7 +20,7 @@
     "lib": "./lib",
     "examples": "./examples"
   },
-  "repository": "https://github.com/Oblong/gelatin",
+  "repository": "https://gitlab.oblong.com/solutions/gelatin/",
   "scripts": {
     "doc": "jsdoc -c doc/conf.json -d doc/out lib/*.js",
     "justthetest": "tap test/*.js",
