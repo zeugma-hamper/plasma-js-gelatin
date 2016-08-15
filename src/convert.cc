@@ -128,6 +128,18 @@ ob_retort v8_to_slaw(v8::Local<v8::Value> js_val, SlawHandle *s, size_t depth) {
       v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
       v.z = Nan::Get(ob, 2).ToLocalChecked()->ToNumber()->Value();
       s->Reset(slaw_v3float64(v));
+    } else if (ilk == Ilkhanate::Ilk::V2Float64) {
+      v2float64 v;
+      v.x = Nan::Get(ob, 0).ToLocalChecked()->ToNumber()->Value();
+      v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
+      s->Reset(slaw_v2float64(v));
+    } else if (ilk == Ilkhanate::Ilk::V4Float64) {
+      v4float64 v;
+      v.x = Nan::Get(ob, 0).ToLocalChecked()->ToNumber()->Value();
+      v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
+      v.z = Nan::Get(ob, 2).ToLocalChecked()->ToNumber()->Value();
+      v.w = Nan::Get(ob, 3).ToLocalChecked()->ToNumber()->Value();
+      s->Reset(slaw_v4float64(v));
     }
   } else if (js_val->Equals(NodeSlaw::NilValue())) {
     s->Reset(slaw_nil());
@@ -189,12 +201,42 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       RETURN(js_num);
     } else {
       if (slaw_is_numeric_vector(s)) {
-        // Punting on other types of vectors for right now.  (Ideally this code
-        // would be rather generic, instead of a chain of if-else-ifs checking
-        // for every kind of numeric vector -- also, the assignment into the
-        // ArrayBuffer below could be shared by all types of vectors (and
-        // numeric arrays too, probably.)
-        if (!slaw_is_v3float64(s)) {
+        v8::Local<v8::Context> ctxt = Nan::GetCurrentContext();
+        v8::Local<v8::Function> ilkctor;
+        v8::Local<v8::Value> f64arr;
+
+        // Urge to template rising...
+        if (slaw_is_v3float64(s)) {
+          auto buf =
+              v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v3float64));
+          const v3float64 *src = slaw_v3float64_emit(s);
+          v3float64 *dst = (v3float64 *)buf->GetContents().Data();
+          *dst = *src;
+
+          constexpr size_t BYTELEN = 3;
+          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V3Float64);
+        } else if (slaw_is_v2float64(s)) {
+          auto buf =
+              v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v2float64));
+          const v2float64 *src = slaw_v2float64_emit(s);
+          v2float64 *dst = (v2float64 *)buf->GetContents().Data();
+          *dst = *src;
+
+          constexpr size_t BYTELEN = 2;
+          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V2Float64);
+        } else if (slaw_is_v4float64(s)) {
+          auto buf =
+              v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v4float64));
+          const v4float64 *src = slaw_v4float64_emit(s);
+          v4float64 *dst = (v4float64 *)buf->GetContents().Data();
+          *dst = *src;
+
+          constexpr size_t BYTELEN = 4;
+          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V4Float64);
+        } else {
           SlawHandle str(slaw_spew_overview_to_string(s));
           OB_LOG_BUG(
               "Missing non-scalar numeric conversion.  Please file a bug with "
@@ -202,19 +244,8 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
               slaw_string_emit(str.Borrow()));
           RETURN(Nan::Undefined());
         }
-
-        auto ctxt = Nan::GetCurrentContext();
-        auto buf = v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v3float64));
-        const v3float64 *src = slaw_v3float64_emit(s);
-        v3float64 *dst = (v3float64 *)buf->GetContents().Data();
-        *dst = *src;
-
-        constexpr size_t BYTELEN = 3;
-        // create a Float64Array view.
-        v8::Local<v8::Value> f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
-        // wrap it in the right type.
-        auto ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V3Float64);
-        auto vect = ilkctor->NewInstance(ctxt, 1, &f64arr).ToLocalChecked();
+        v8::Local<v8::Value> vect =
+            ilkctor->NewInstance(ctxt, 1, &f64arr).ToLocalChecked();
         RETURN(vect);
       }
 

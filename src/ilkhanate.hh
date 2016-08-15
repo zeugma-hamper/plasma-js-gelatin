@@ -32,7 +32,9 @@ NAN_MODULE_INIT(Init);
 
 enum class Ilk {
   Null,  // Represents "lack of Ilk".
+  V2Float64,
   V3Float64,
+  V4Float64,
 };
 
 Ilk GetIlk(v8::Local<v8::Object>);

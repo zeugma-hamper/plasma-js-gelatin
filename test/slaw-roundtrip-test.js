@@ -66,6 +66,20 @@ tap.test('Slaw Vect roundtrip', function(t) {
   t.end();
 });
 
+tap.test('Slaw Vect2 roundtrip', function(t) {
+  const Vect2 = require('../').Vect2;
+  roundTrip(t, new Vect2(new Float64Array([0, 1])));
+  roundTrip(t, new Vect2(new Float64Array([0, 15])));
+  t.end();
+});
+
+tap.test('Slaw Vect4 roundtrip', function(t) {
+  const Vect4 = require('../').Vect4;
+  roundTrip(t, new Vect4(new Float64Array([0, 1, 2, 3])));
+  roundTrip(t, new Vect4(new Float64Array([0, 15, 27, 531])));
+  t.end();
+});
+
 tap.test('Slaw Protein roundtrip', function(t) {
   const Protein = require('../').Protein;
   roundTrip(t, new Protein([], {foo: 123}));
