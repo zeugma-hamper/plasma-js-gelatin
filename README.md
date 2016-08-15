@@ -2,6 +2,8 @@
 
 libPlasma bindings/implementation for Node.js.  Work in progress.
 
+[![npm version](https://badge.fury.io/js/gelatin.svg)](https://badge.fury.io/js/gelatin)
+
 ## g-speak version
 
 Since it has a native component, gelatin requires the g-speak platform to be
