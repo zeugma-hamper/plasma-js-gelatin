@@ -62,7 +62,7 @@ npm install
 npm run doc
 ```
 
-The documentation will be available in the `doc/out` folder.
+The documentation will be available at `doc/out/index.html`
 
 ## type conversions
 
