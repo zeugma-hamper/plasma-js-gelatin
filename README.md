@@ -20,9 +20,42 @@ Check the `examples/` directory for some commented examples of using gelatin.
 `examples/wandsplit.js` is quite practical (inspired by a real-world use case)
 and uses the most gelatin features of the examples.
 
+
+```js
+const util = require('util');
+const peek = require('gelatin').peek;
+
+const pool = process.argv[2];
+
+function main() {
+  if (!pool) {
+    console.error('pool argument required.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const p = peek(pool);
+
+  p.on('data', (protein) => {
+    console.log('metabolized protein with descrips:', protein.descrips);
+    if (protein.descrips.indexOf('hangup') >= 0) {
+      p.end();
+    }
+  });
+  p.on('error', (err) => {
+    console.error(`peek error: ${util.inspect(err)}`);
+  });
+
+  console.log('now deposit/poke a protein to pool', pool);
+}
+
+main();
+```
+
+
 ## API documentation
 
-To generate API documentation:
+To generate API documentation from the source repo:
 
 ```
 npm install
