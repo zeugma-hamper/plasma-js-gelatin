@@ -61,8 +61,8 @@ tarball somewhere and make sure that `npm install` from the `package/`
 directory works.  The files to be included in the published package are
 whitelisted in [`package.json`'s `"files"`][npm-files] field.
 
-Please run [`npm version`][npm-version] followed by `git push` and then `git
-push --tags` before publishing a new release.
+Please run [`npm version <newversion>`][npm-version] followed by `git push` and
+then `git push --tags` before publishing a new release.
 
 See also
 ["Before Publishing: Make Sure Your Package Installs and Works"][before-pub]
