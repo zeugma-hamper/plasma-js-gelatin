@@ -98,6 +98,8 @@ For object types and the special `Slaw.nil` value, the conversions are:
 | Array (`[ true, false ]`)                            | list            |
 | gelatin.Slaw.nil (`gelatin.Slaw.nil`)                | nil             |
 | gelatin.Vect (`new gelatin.Vect([0.0, 1.0, 0.])`)    | v3float64       |
+| gelatin.Vect2 (`new gelatin.Vect2([0.0, 1.0])`)      | v2float64       |
+| gelatin.Vect4 (`new gelatin.Vect4([0, 1, 2, 3])`)    | v4float64       |
 | gelatin.Protein (`new gelatin.Protein(["foo"], {})`) | protein         |
 | Object (other) (`{foo: 123}`) (note: only *from* JS) | map             |
 
