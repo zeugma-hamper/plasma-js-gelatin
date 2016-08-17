@@ -1,0 +1,50 @@
+# -*- shell-script -*-
+
+set -e
+set -x
+
+SRCFILE="`readlink $0 2>/dev/null || echo $0`"
+SRC="`dirname $SRCFILE`"
+SRC="`cd $SRC; pwd`"
+. $SRC/../bs_funcs.sh
+
+cmd=$1
+shift
+
+opt_gspeak=""
+case "$1" in
+--g-speak) opt_gspeak="$2" ;;
+"") ;;
+*) bs_abort "usage: buildshim --g-speak X.Y";;
+esac
+
+if [ -z "$opt_gspeak" ]; then
+    bs_abort "usage: buildshim --g-speak X.Y"
+fi
+
+echo "This is version $version (patchnum $version_patchnum), building on $_os" >&2
+
+do_install_deps() {
+    bs_use_package_repo
+    # This is a test-only project for now, so no debian/control, so we have to install deps here
+    sudo apt-get install -y \
+       nodejs nodejs-legacy node-gyp node-nan npm \
+       oblong-plasma$opt_gspeak oblong-system-protist$opt_gspeak
+}
+
+do_build() {
+    node-gyp rebuild
+}
+
+do_check() {
+    echo "FIXME: The version of node-tap available in the Ubuntu repos is too old to run tests."
+    # npm test
+}
+
+# The verbs, in the order they must follow
+case $cmd in
+install_deps)   do_install_deps ;;
+build)          do_build ;;
+check)          do_check ;;
+*)              echo "Unknown step $cmd";;
+esac

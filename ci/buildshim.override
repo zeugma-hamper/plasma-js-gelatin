@@ -1,0 +1,20 @@
+# -*- shell-script -*-
+
+if test -d /System
+then
+  . $PWD/ci/buildshim-osx.override "$@"
+  exit $?
+fi
+if test "$OS" = Windows_NT
+then
+  . $PWD/ci/buildshim-win.override "$@"
+  exit $?
+fi
+if grep Ubuntu /etc/issue
+then
+  . $PWD/ci/buildshim-ubu.override "$@"
+  exit $?
+fi
+
+echo "Unknown operating system"
+exit 1
