@@ -32,7 +32,7 @@ do_install_deps() {
        oblong-plasma$opt_gspeak oblong-system-protist$opt_gspeak
 }
 
-do_build() {
+do_compile() {
     node-gyp rebuild
 }
 
@@ -44,7 +44,7 @@ do_check() {
 # The verbs, in the order they must follow
 case $cmd in
 install_deps)   do_install_deps ;;
-build)          do_build ;;
+compile)        do_compile ;;
 check)          do_check ;;
 *)              echo "Unknown step $cmd";;
 esac
