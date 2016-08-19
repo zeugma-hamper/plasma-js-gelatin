@@ -41,10 +41,28 @@ do_check() {
     # npm test
 }
 
+do_upload() {
+    if bs_is_try_build
+    then
+        bs_warn "Skipping github mirror because this is a try build."
+        return 0
+    fi
+
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    echo "On branch $branch"
+    if test "$branch" = "master"
+    then
+        echo "Forcefully mirroring master branch to github."
+        # Override anything anybody committed directly to Github repo!
+        git push -f git@github.com:Oblong/gelatin.git master --tags
+    fi
+}
+
 # The verbs, in the order they must follow
 case $cmd in
 install_deps)   do_install_deps ;;
 compile)        do_compile ;;
 check)          do_check ;;
+upload)         do_upload ;;
 *)              echo "Unknown step $cmd";;
 esac
