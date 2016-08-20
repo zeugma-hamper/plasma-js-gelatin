@@ -52,9 +52,14 @@ do_upload() {
     echo "On branch $branch"
     if test "$branch" = "master"
     then
-        echo "Forcefully mirroring master branch to github."
+        # echo "Forcefully mirroring master branch to github."
         # Override anything anybody committed directly to Github repo!
-        git push -f git@github.com:Oblong/gelatin.git master --tags
+        # git push -f git@github.com:Oblong/gelatin.git master --tags
+        # The above command fails on the Ubuntu builders with:
+        #     Host key verification failed.
+        #     fatal: Could not read from remote repository.
+        # Skipping it until we get help from the build team.
+        bs_warn "Skipping mirror step because it's broken on Ubuntu builders"
     fi
 }
 
