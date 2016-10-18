@@ -32,6 +32,12 @@ unique_slabu make_unique_slabu() {
   return unique_slabu(sb, slabu_deleter());
 };
 
+// Helper for indexed access into arrays of numbers.
+inline float64 GetFloat64(v8::Local<v8::Object> ob, unt32 idx) {
+  v8::Local<v8::Value> val = Nan::Get(ob, idx).ToLocalChecked();
+  return val->ToNumber(Nan::GetCurrentContext()).ToLocalChecked()->Value();
+}
+
 }  // anonymous namespace
 
 ob_retort v8_to_slaw(v8::Local<v8::Value> js_val, SlawHandle *s, size_t depth) {
@@ -124,21 +130,21 @@ ob_retort v8_to_slaw(v8::Local<v8::Value> js_val, SlawHandle *s, size_t depth) {
       s->Reset(slaw_map(sb.get()));
     } else if (ilk == Ilkhanate::Ilk::V3Float64) {
       v3float64 v;
-      v.x = Nan::Get(ob, 0).ToLocalChecked()->ToNumber()->Value();
-      v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
-      v.z = Nan::Get(ob, 2).ToLocalChecked()->ToNumber()->Value();
+      v.x = GetFloat64(ob, 0);
+      v.y = GetFloat64(ob, 1);
+      v.z = GetFloat64(ob, 2);
       s->Reset(slaw_v3float64(v));
     } else if (ilk == Ilkhanate::Ilk::V2Float64) {
       v2float64 v;
-      v.x = Nan::Get(ob, 0).ToLocalChecked()->ToNumber()->Value();
-      v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
+      v.x = GetFloat64(ob, 0);
+      v.y = GetFloat64(ob, 1);
       s->Reset(slaw_v2float64(v));
     } else if (ilk == Ilkhanate::Ilk::V4Float64) {
       v4float64 v;
-      v.x = Nan::Get(ob, 0).ToLocalChecked()->ToNumber()->Value();
-      v.y = Nan::Get(ob, 1).ToLocalChecked()->ToNumber()->Value();
-      v.z = Nan::Get(ob, 2).ToLocalChecked()->ToNumber()->Value();
-      v.w = Nan::Get(ob, 3).ToLocalChecked()->ToNumber()->Value();
+      v.x = GetFloat64(ob, 0);
+      v.y = GetFloat64(ob, 1);
+      v.z = GetFloat64(ob, 2);
+      v.w = GetFloat64(ob, 3);
       s->Reset(slaw_v4float64(v));
     }
   } else if (js_val->Equals(NodeSlaw::NilValue())) {

@@ -42,7 +42,8 @@ NAN_METHOD(NodeSlaw::New) {
     constexpr int argc = 1;
     auto argv = std::array<v8::Local<v8::Value>, argc>{{info[0]}};
     auto ctor = Nan::New<v8::Function>(constructor());
-    info.GetReturnValue().Set(ctor->NewInstance(argc, argv.data()));
+    auto ret = Nan::NewInstance(ctor, argc, argv.data()).ToLocalChecked();
+    info.GetReturnValue().Set(ret);
   }
 }
 
@@ -121,7 +122,8 @@ NAN_METHOD(NodeProtein::New) {
     constexpr int argc = 2;
     auto argv = std::array<v8::Local<v8::Value>, argc>{{info[0], info[1]}};
     auto ctor = Nan::New<v8::Function>(constructor());
-    info.GetReturnValue().Set(ctor->NewInstance(argc, argv.data()));
+    auto ret = Nan::NewInstance(ctor, argc, argv.data()).ToLocalChecked();
+    info.GetReturnValue().Set(ret);
   }
 }
 
@@ -216,7 +218,7 @@ v8::Handle<v8::Object> NodeProtein::FromSlawHandle(SlawHandle s) {
   OBSERT(slaw_is_protein(s.Borrow()));
   auto ns = new NodeProtein(std::move(s));
   auto ctor = Nan::New<v8::Function>(constructor());
-  auto obj = ctor->NewInstance(Nan::GetCurrentContext()).ToLocalChecked();
+  auto obj = Nan::NewInstance(ctor).ToLocalChecked();
   ns->Wrap(obj);
   return scope.Escape(obj);
 }
