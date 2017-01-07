@@ -12,9 +12,13 @@ tap.test('slaw length from buffer', (t) => {
   });
   t.test('bad buffers', (t) => {
     const notOct = new Buffer([0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-    t.throws(() => { native.slawLenFromHeader(notOct); });
+    t.throws(() => {
+      native.slawLenFromHeader(notOct);
+    });
     const hugeSlaw = new Buffer([0x06, 0xff, 0xff, 0xff, 0xff, 0xff, 0x1f]);
-    t.throws(() => { native.slawLenFromHeader(hugeSlaw); });
+    t.throws(() => {
+      native.slawLenFromHeader(hugeSlaw);
+    });
     t.end();
   });
   t.end();

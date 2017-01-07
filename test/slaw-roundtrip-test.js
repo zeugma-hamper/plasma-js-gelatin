@@ -44,8 +44,9 @@ tap.test('Slaw numeric roundtrip', function(t) {
 tap.test('Slaw map roundtrip', function(t) {
   roundTrip(t, new Map());
   roundTrip(t, new Map([['foo', true], ['bar', 'baz']]));
-  roundTrip(t, new Map([['such', new Map([['nested',
-                                           new Map([['wow', true]])]])]]));
+  roundTrip(t, new Map([['such', new Map([
+    ['nested', new Map([['wow', true]])],
+  ])]]));
   t.end();
 });
 

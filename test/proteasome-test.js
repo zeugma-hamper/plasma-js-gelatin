@@ -4,7 +4,6 @@ const Proteasome = require('../lib/Proteasome');
 const Protein = require('../lib/native').Protein;
 const Ribosome = require('../lib/Ribosome');
 const tap = require('tap');
-const stream = require('stream');
 
 tap.test('Proteasome sanity', (t) => {
   let hello = new Proteasome();
