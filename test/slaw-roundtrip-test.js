@@ -74,6 +74,13 @@ tap.test('Slaw Vect2 roundtrip', function(t) {
   t.end();
 });
 
+tap.test('Slaw Vect2i roundtrip', function(t) {
+  const Vect2i = require('../').Vect2i;
+  roundTrip(t, new Vect2i(new Int32Array([0, 1])));
+  roundTrip(t, new Vect2i(new Int32Array([0, 15])));
+  t.end();
+});
+
 tap.test('Slaw Vect4 roundtrip', function(t) {
   const Vect4 = require('../').Vect4;
   roundTrip(t, new Vect4(new Float64Array([0, 1, 2, 3])));

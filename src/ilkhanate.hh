@@ -33,6 +33,7 @@ NAN_MODULE_INIT(Init);
 enum class Ilk {
   Null,  // Represents "lack of Ilk".
   V2Float64,
+  V2Int32,
   V3Float64,
   V4Float64,
 };
