@@ -4,10 +4,10 @@
 #include "convert.hh"
 
 #include <assert.h>
-#include <memory>
 #include <libLoam/c/ob-log.h>
-#include <libPlasma/c/slaw.h>
 #include <libPlasma/c/slaw-coerce.h>
+#include <libPlasma/c/slaw.h>
+#include <memory>
 
 #include "handles.hh"
 #include "ilkhanate.hh"
@@ -36,6 +36,14 @@ unique_slabu make_unique_slabu() {
 inline float64 GetFloat64(v8::Local<v8::Object> ob, unt32 idx) {
   v8::Local<v8::Value> val = Nan::Get(ob, idx).ToLocalChecked();
   return val->ToNumber(Nan::GetCurrentContext()).ToLocalChecked()->Value();
+}
+
+// Helper for indexed access into arrays of numbers.
+inline int32 GetInt32(v8::Local<v8::Object> ob, unt32 idx) {
+  v8::Local<v8::Value> val = Nan::Get(ob, idx).ToLocalChecked();
+  return (int32)val->ToNumber(Nan::GetCurrentContext())
+      .ToLocalChecked()
+      ->Value();
 }
 
 }  // anonymous namespace
@@ -139,6 +147,11 @@ ob_retort v8_to_slaw(v8::Local<v8::Value> js_val, SlawHandle *s, size_t depth) {
       v.x = GetFloat64(ob, 0);
       v.y = GetFloat64(ob, 1);
       s->Reset(slaw_v2float64(v));
+    } else if (ilk == Ilkhanate::Ilk::V2Int32) {
+      v2int32 v;
+      v.x = GetInt32(ob, 0);
+      v.y = GetInt32(ob, 1);
+      s->Reset(slaw_v2int32(v));
     } else if (ilk == Ilkhanate::Ilk::V4Float64) {
       v4float64 v;
       v.x = GetFloat64(ob, 0);
@@ -209,7 +222,7 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       if (slaw_is_numeric_vector(s)) {
         v8::Local<v8::Context> ctxt = Nan::GetCurrentContext();
         v8::Local<v8::Function> ilkctor;
-        v8::Local<v8::Value> f64arr;
+        v8::Local<v8::Value> numarr;
 
         // Urge to template rising...
         if (slaw_is_v3float64(s)) {
@@ -219,8 +232,8 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
           v3float64 *dst = (v3float64 *)buf->GetContents().Data();
           *dst = *src;
 
-          constexpr size_t BYTELEN = 3;
-          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          constexpr size_t LEN = 3;
+          numarr = v8::Float64Array::New(buf, 0, LEN);
           ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V3Float64);
         } else if (slaw_is_v2float64(s)) {
           auto buf =
@@ -229,9 +242,18 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
           v2float64 *dst = (v2float64 *)buf->GetContents().Data();
           *dst = *src;
 
-          constexpr size_t BYTELEN = 2;
-          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          constexpr size_t LEN = 2;
+          numarr = v8::Float64Array::New(buf, 0, LEN);
           ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V2Float64);
+        } else if (slaw_is_v2int32(s)) {
+          auto buf = v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v2int32));
+          const v2int32 *src = slaw_v2int32_emit(s);
+          v2int32 *dst = (v2int32 *)buf->GetContents().Data();
+          *dst = *src;
+
+          constexpr size_t LEN = 2;
+          numarr = v8::Int32Array::New(buf, 0, LEN);
+          ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V2Int32);
         } else if (slaw_is_v4float64(s)) {
           auto buf =
               v8::ArrayBuffer::New(ctxt->GetIsolate(), sizeof(v4float64));
@@ -239,8 +261,8 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
           v4float64 *dst = (v4float64 *)buf->GetContents().Data();
           *dst = *src;
 
-          constexpr size_t BYTELEN = 4;
-          f64arr = v8::Float64Array::New(buf, 0, BYTELEN);
+          constexpr size_t LEN = 4;
+          numarr = v8::Float64Array::New(buf, 0, LEN);
           ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::V4Float64);
         } else {
           SlawHandle str(slaw_spew_overview_to_string(s));
@@ -251,7 +273,7 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
           RETURN(Nan::Undefined());
         }
         v8::Local<v8::Value> vect =
-            ilkctor->NewInstance(ctxt, 1, &f64arr).ToLocalChecked();
+            ilkctor->NewInstance(ctxt, 1, &numarr).ToLocalChecked();
         RETURN(vect);
       }
 
@@ -282,8 +304,9 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       if (js_key.IsEmpty()) return {};
       Nan::MaybeLocal<v8::Value> js_val = slaw_to_v8(val);
       if (js_val.IsEmpty()) return {};
-      js_map = js_map->Set(Nan::GetCurrentContext(), js_key.ToLocalChecked(),
-                           js_val.ToLocalChecked())
+      js_map = js_map
+                   ->Set(Nan::GetCurrentContext(), js_key.ToLocalChecked(),
+                         js_val.ToLocalChecked())
                    .ToLocalChecked();
       cons = slaw_list_emit_next(s, cons);
     }

@@ -29,6 +29,28 @@ v8::Local<v8::Symbol> V2Float64Ilk() {
   return scope.Escape(Nan::New(sym));
 }
 
+v8::Local<v8::Symbol> V2Int32Ilk() {
+  static Nan::Persistent<v8::Symbol> sym;
+  Nan::EscapableHandleScope scope;
+  if (sym.IsEmpty()) {
+    auto ctxt = Nan::GetCurrentContext();
+    sym.Reset(v8::Symbol::New(
+        ctxt->GetIsolate(), Nan::New("gelatin.ilk.v2int32").ToLocalChecked()));
+  }
+  return scope.Escape(Nan::New(sym));
+}
+
+v8::Local<v8::Symbol> V2Int64Ilk() {
+  static Nan::Persistent<v8::Symbol> sym;
+  Nan::EscapableHandleScope scope;
+  if (sym.IsEmpty()) {
+    auto ctxt = Nan::GetCurrentContext();
+    sym.Reset(v8::Symbol::New(
+        ctxt->GetIsolate(), Nan::New("gelatin.ilk.v2int64").ToLocalChecked()));
+  }
+  return scope.Escape(Nan::New(sym));
+}
+
 v8::Local<v8::Symbol> V3Float64Ilk() {
   static Nan::Persistent<v8::Symbol> sym;
   Nan::EscapableHandleScope scope;
@@ -72,6 +94,9 @@ v8::Local<v8::Symbol> SymForIlk(gelatin::Ilkhanate::Ilk ilk) {
     case Ilk::V2Float64:
       ilksym = V2Float64Ilk();
       break;
+    case Ilk::V2Int32:
+      ilksym = V2Int32Ilk();
+      break;
     case Ilk::V3Float64:
       ilksym = V3Float64Ilk();
       break;
@@ -111,6 +136,8 @@ NAN_MODULE_INIT(Init) {
   auto obj = Nan::New<v8::Object>();
   Nan::Set(obj, Nan::New("ILK").ToLocalChecked(), IlkSymbol());
   Nan::Set(obj, Nan::New("V2FLOAT64").ToLocalChecked(), V2Float64Ilk());
+  Nan::Set(obj, Nan::New("V2INT32").ToLocalChecked(), V2Int32Ilk());
+  Nan::Set(obj, Nan::New("V2INT64").ToLocalChecked(), V2Int64Ilk());
   Nan::Set(obj, Nan::New("V3FLOAT64").ToLocalChecked(), V3Float64Ilk());
   Nan::Set(obj, Nan::New("V4FLOAT64").ToLocalChecked(), V4Float64Ilk());
   Nan::SetMethod(obj, "registerIlkConstructor", RegisterIlkConstructor);
@@ -124,6 +151,8 @@ Ilk GetIlk(v8::Local<v8::Object> obj) {
     return Ilk::V3Float64;
   } else if (obilk->Equals(V2Float64Ilk())) {
     return Ilk::V2Float64;
+  } else if (obilk->Equals(V2Int32Ilk())) {
+    return Ilk::V2Int32;
   } else if (obilk->Equals(V4Float64Ilk())) {
     return Ilk::V4Float64;
   } else {
