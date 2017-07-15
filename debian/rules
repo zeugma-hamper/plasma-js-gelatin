@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# To sense this from environment, we'd have to parse out the version number and plop it on the package names
+# Instead, encourage developers to use set-gspeak.sh if they need to change the version of g-speak the debian package builds against
+G_SPEAK_HOME=/opt/oblong/g-speak3.30
+export G_SPEAK_HOME
+
+YOBUILD=/opt/oblong/deps-64-11
+export YOBUILD
+
+SHLIBSDIR = debian/oblong-node-gelatin3.30/usr/lib/nodejs/gelatin/build/Release
+SHLIBS = gelatin.node
+
+%:
+	dh $@ --with nodejs
+
+override_dh_auto_build:
+	node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yobuild_home=$(YOBUILD)
+	node-gyp build
+
+override_dh_auto_clean:
+	node-gyp clean
+
+# since we're building the native libs, ignore the fallbacks
+# also have to rename .node to .so so they are detected by dh_strip dh_shlibdeps etc
+override_dh_install:
+	dh_install
+	cd $(SHLIBSDIR) && { \
+	  chmod -x $(SHLIBS); \
+	  for i in $(SHLIBS); do mv "$$i" "$${i%.node}.so"; done; }
+
+# restore .node name
+override_dh_shlibdeps:
+	dh_shlibdeps
+	cd $(SHLIBSDIR) && mv gelatin.so gelatin.node
+
+.PHONY: debian/clean

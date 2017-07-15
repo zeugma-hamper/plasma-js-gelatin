@@ -1,0 +1,30 @@
+# See https://wiki.debian.org/Javascript/Nodejs/Manual
+# for some guidance on packaging node modules
+Source: oblong-node-gelatin3.30
+Section: web
+Priority: extra
+Maintainer: buildtools <buildtools@oblong.com>
+Build-Depends:
+ debhelper (>= 9.0.0),
+ node-gyp,
+ nodejs (>= 4.0),
+ nodejs-legacy,
+ node-nan,
+ npm,
+ oblong-plasma3.30,
+ oblong-system-protist3.30,
+Standards-Version: 3.9.8
+Homepage: https://github.com/oblong/gelatin
+XS-Testsuite: autopkgtest
+Vcs-Git: https://github.com/Oblong/gelatin.git
+Vcs-Browser: https://github.com/Oblong/gelatin.git
+
+Package: oblong-node-gelatin3.30
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ nodejs,
+ oblong-plasma3.30,
+Description: libPlasma bindings/implementation for Node.js.
+ .
+ Node.js is an event-based server-side javascript engine.
