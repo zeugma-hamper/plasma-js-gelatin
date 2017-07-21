@@ -2,6 +2,7 @@
 
 // Reads proteins from a wands pool, sifts wand reports for a wand of interest
 // and deposits wand reports for just that wand to an output pool.
+// To use outside the source tree, replace require('..') with require('gelatin')
 
 'use strict';
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 // A protein-spamming program which demonstrates the `depositor()` function.
+// To use outside the source tree, replace require('..') with require('gelatin')
 
 'use strict';
 
