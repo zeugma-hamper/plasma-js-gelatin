@@ -1,6 +1,6 @@
 # See https://wiki.debian.org/Javascript/Nodejs/Manual
 # for some guidance on packaging node modules
-Source: oblong-node-gelatin3.30
+Source: oblong-node-gelatin-gs3.30x0
 Section: web
 Priority: extra
 Maintainer: buildtools <buildtools@oblong.com>
@@ -19,7 +19,7 @@ XS-Testsuite: autopkgtest
 Vcs-Git: https://github.com/Oblong/gelatin.git
 Vcs-Browser: https://github.com/Oblong/gelatin.git
 
-Package: oblong-node-gelatin3.30
+Package: oblong-node-gelatin-gs3.30x0
 Architecture: any
 Depends:
  ${shlibs:Depends},

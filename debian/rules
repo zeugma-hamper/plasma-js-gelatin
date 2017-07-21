@@ -12,7 +12,7 @@ export G_SPEAK_HOME
 YOBUILD=/opt/oblong/deps-64-11
 export YOBUILD
 
-SHLIBSDIR = debian/oblong-node-gelatin3.30/usr/lib/nodejs/gelatin/build/Release
+SHLIBSDIR = debian/oblong-node-gelatin-gs3.30x0/usr/lib/nodejs/gelatin/build/Release
 SHLIBS = gelatin.node
 
 %:
