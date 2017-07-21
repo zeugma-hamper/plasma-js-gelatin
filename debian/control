@@ -25,6 +25,7 @@ Depends:
  ${shlibs:Depends},
  nodejs,
  oblong-plasma3.30,
+ oblong-system-protist3.30,
 Description: libPlasma bindings/implementation for Node.js.
  .
  Node.js is an event-based server-side javascript engine.
