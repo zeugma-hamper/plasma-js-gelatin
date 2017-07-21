@@ -7,7 +7,7 @@ Maintainer: buildtools <buildtools@oblong.com>
 Build-Depends:
  debhelper (>= 9.0.0),
  node-gyp,
- nodejs (>= 4.0),
+ nodejs (>= 4.2),
  nodejs-legacy,
  node-nan,
  npm,
@@ -23,7 +23,8 @@ Package: oblong-node-gelatin-gs3.30x0
 Architecture: any
 Depends:
  ${shlibs:Depends},
- nodejs,
+ nodejs (>= 4.2),
+ nodejs-legacy,
  oblong-plasma3.30,
  oblong-system-protist3.30,
 Description: libPlasma bindings/implementation for Node.js.
