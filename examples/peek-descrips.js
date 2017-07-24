@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 // Simple example demonstrating use of the `peek` function.
+// To use outside the source tree, replace require('..') with require('gelatin')
 
 'use strict';
 
