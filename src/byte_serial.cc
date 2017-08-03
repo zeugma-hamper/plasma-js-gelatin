@@ -7,8 +7,8 @@
 #include <libLoam/c/ob-log.h>
 #include <libLoam/c/ob-retorts.h>
 #include <libPlasma/c/protein.h>
-#include <libPlasma/c/slaw.h>
 #include <libPlasma/c/slaw-io.h>
+#include <libPlasma/c/slaw.h>
 
 #include "convert.hh"
 #include "handles.hh"
@@ -39,13 +39,13 @@ NAN_METHOD(SlawLenFromHeader) {
   }
   unt64 len = slaw_len((bslaw)buf);
 
-  if (len > std::numeric_limits<int32_t>::max()) {
+  if (len > node::Buffer::kMaxLength) {
     OB_LOG_WARNING("Overly huge protein (%" OB_FMT_64
                    "u bytes) length in header oct.\n",
                    len);
     Nan::ThrowRangeError(
-        "Sorry, 32-bits of protein size should be enough for anyone (so say "
-        "Node and Javascript).");
+        "Proteins larger than 2GB (1GB on 32-bit) are not supported by "
+        "gelatin.");
     return;
   } else if (len <= 0) {
     unt64 oct;
