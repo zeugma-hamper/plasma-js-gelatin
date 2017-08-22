@@ -107,11 +107,20 @@ Composite values like Maps and Arrays convert each of their elements to slaw.
 For convenience, it's possible to create a slaw map using a "Plain Old
 JavaScript Object", but a slaw map always converts to a JavaScript Map value.
 
-## compatibility
+## platform compatibility
 
 gelatin officially supports the Node.JS v4.2 "Argon" LTS release on Linux and
 OS X/macOS.  Unofficially, gelatin also tries its best to support the latest
 Node versions released through Homebrew for OS X/macOS.
+
+## plasma-js-bridge compatibility
+
+Limited plasma-js-bridge compatibility is offered.  `peek()` accepts an
+optional callback argument, and a `gelatin/compat` module is provided for
+plasma-js-bridge compatible functions such as `oldestIndex` and `newest`.
+Access the compat module like so:
+
+    const plas = require('gelatin/compat');
 
 ## copyright & license
 
