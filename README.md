@@ -16,6 +16,32 @@ g-speak used is determined this way:
 2. Otherwise, look up the most recent compatible version of g-speak in
    `/opt/oblong`.
 
+## build dependencies
+
+gelatin has these dependencies at build/`npm install` time:
+
+* python2.7, for [node-gyp](https://github.com/nodejs/node-gyp#installation)
+* oblong-loamX.Y
+* oblong-plasmaX.Y
+
+where X.Y is the g-speak version determined above.
+
+Some older versions of g-speak require also, on Ubuntu 16.04:
+
+* libjpeg-dev
+* libpng12-dev
+* libtiff5-dev
+
+## runtime dependencies
+
+At runtime, gelatin depends on:
+
+* oblong-loamX.Y
+* oblong-plasmaX.Y
+* oblong-system-protistX.Y
+
+where X.Y is the g-speak version used at build time.
+
 ## examples
 
 Check the `examples/` directory for some commented examples of using gelatin.
