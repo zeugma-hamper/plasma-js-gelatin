@@ -67,10 +67,11 @@ Steps to publish a release:
 2. Move the tarball to a temporary location, extract it, `cd` into `package/` and
    check that `npm install` succeeds.
 3. Run [`npm version <newversion>`] to increment the version number and tag the
-   latest commit.
+   latest commit.  For ob-buildbot compatibility, the version tag looks like
+   "rel-X.Y.Z".
 4. Assuming you have git remotes `origin` (for the internal repo) and `github`
-   (for the public repo), run these commands: `git push --atomic --tags origin
-   master` and `git push --atomic --tags github master`.  This pushes the
+   (for the public repo), run these commands: `git push --atomic origin master
+   rel-X.Y.Z` and `git push --atomic github master rel-X.Y.Z`.  This pushes the
    master branch and tag you just made to each remote.
 5. If anything in step (4) failed, abort and consult the rest of the gelatin
    team.  Do not proceed!
