@@ -32,6 +32,7 @@
     "nan": "^2.3.1"
   },
   "devDependencies": {
+    "node-gyp": "^3.0.3",
     "eslint": "^3.13.0",
     "eslint-config-google": "^0.7.1",
     "jsdoc": "^3.4.0",
