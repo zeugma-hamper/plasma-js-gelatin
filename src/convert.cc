@@ -136,6 +136,15 @@ ob_retort v8_to_slaw(v8::Local<v8::Value> js_val, SlawHandle *s, size_t depth) {
         slabu_map_put(sb.get(), skey.Borrow(), sval.Borrow());
       }
       s->Reset(slaw_map(sb.get()));
+    } else if (ilk == Ilkhanate::Ilk::Cons) {
+      SlawHandle car, cdr;
+      v8::Local<v8::Value> js_car =
+          ob->Get(ctxt, Nan::New("car").ToLocalChecked()).ToLocalChecked();
+      v8::Local<v8::Value> js_cdr =
+          ob->Get(ctxt, Nan::New("cdr").ToLocalChecked()).ToLocalChecked();
+      TRY_(v8_to_slaw(js_car, &car, depth));
+      TRY_(v8_to_slaw(js_cdr, &cdr, depth));
+      s->Reset(slaw_cons(car.Borrow(), cdr.Borrow()));
     } else if (ilk == Ilkhanate::Ilk::V3Float64) {
       v3float64 v;
       v.x = GetFloat64(ob, 0);
@@ -330,11 +339,23 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
     v8::Local<v8::Object> prot =
         NodeProtein::FromSlawHandle(SlawHandle(slaw_dup(s)));
     RETURN(prot);
+  } else if (slaw_is_cons(s)) {
+    v8::Local<v8::Value> car_cdr[2] = {
+        slaw_to_v8(slaw_cons_emit_car(s)).ToLocalChecked(),
+        slaw_to_v8(slaw_cons_emit_cdr(s)).ToLocalChecked()};
+    auto ilkctor = Ilkhanate::GetIlkConstructor(Ilkhanate::Ilk::Cons);
+    size_t arg_count = sizeof(car_cdr) / sizeof(*car_cdr);
+    v8::Local<v8::Value> cons =
+        ilkctor->NewInstance(Nan::GetCurrentContext(), arg_count, car_cdr)
+            .ToLocalChecked();
+    RETURN(cons);
   }
   SlawHandle serr(slaw_spew_overview_to_string(s));
 
-  OB_LOG_BUG("MISSING SLAW CONVERSION, RETURNING UNDEFINED %s",
-             slaw_string_emit(serr.Borrow()));
+  OB_LOG_BUG(
+      "Missing non-scalar numeric conversion.  Please file a bug with "
+      "Oblong.  Include the following string describing the slaw:\n%s",
+      slaw_string_emit(serr.Borrow()));
   RETURN(Nan::Undefined());
 #undef RETURN
 }

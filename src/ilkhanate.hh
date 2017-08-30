@@ -8,7 +8,8 @@
 
 // Ilkhanate is a "type tagging" system for JS values, used to select behavior
 // for marshalling and unmarshalling JS values to/from slawx where there may
-// otherwise be ambiguity.
+// otherwise be ambiguity.  The name comes from the libPlasma internal jargon
+// "ilk", which means the "type" that a slaw has (unt32, list, etc.).
 //
 // For example, the Javascript-side `Vect` class installs the V3Float64 ilk on
 // all objects produced by its constructor function.  When serialized to a
@@ -32,6 +33,8 @@ NAN_MODULE_INIT(Init);
 
 enum class Ilk {
   Null,  // Represents "lack of Ilk".
+
+  Cons,  // constructor(car,cdr)
   V2Float64,
   V2Int32,
   V3Float64,
