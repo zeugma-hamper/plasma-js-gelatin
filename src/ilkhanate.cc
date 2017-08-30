@@ -17,6 +17,17 @@ v8::Local<v8::Symbol> IlkSymbol() {
   return scope.Escape(Nan::New(sym));
 }
 
+v8::Local<v8::Symbol> ConsIlk() {
+  static Nan::Persistent<v8::Symbol> sym;
+  Nan::EscapableHandleScope scope;
+  if (sym.IsEmpty()) {
+    auto ctxt = Nan::GetCurrentContext();
+    sym.Reset(v8::Symbol::New(ctxt->GetIsolate(),
+                              Nan::New("gelatin.ilk.cons").ToLocalChecked()));
+  }
+  return scope.Escape(Nan::New(sym));
+}
+
 v8::Local<v8::Symbol> V2Float64Ilk() {
   static Nan::Persistent<v8::Symbol> sym;
   Nan::EscapableHandleScope scope;
@@ -90,7 +101,11 @@ v8::Local<v8::Symbol> SymForIlk(gelatin::Ilkhanate::Ilk ilk) {
   using namespace gelatin::Ilkhanate;
 
   v8::Local<v8::Symbol> ilksym;
+  // This is near the point where a lookup table would be better.
   switch (ilk) {
+    case Ilk::Cons:
+      ilksym = ConsIlk();
+      break;
     case Ilk::V2Float64:
       ilksym = V2Float64Ilk();
       break;
@@ -135,6 +150,8 @@ namespace Ilkhanate {
 NAN_MODULE_INIT(Init) {
   auto obj = Nan::New<v8::Object>();
   Nan::Set(obj, Nan::New("ILK").ToLocalChecked(), IlkSymbol());
+
+  Nan::Set(obj, Nan::New("CONS").ToLocalChecked(), ConsIlk());
   Nan::Set(obj, Nan::New("V2FLOAT64").ToLocalChecked(), V2Float64Ilk());
   Nan::Set(obj, Nan::New("V2INT32").ToLocalChecked(), V2Int32Ilk());
   Nan::Set(obj, Nan::New("V2INT64").ToLocalChecked(), V2Int64Ilk());
@@ -147,7 +164,11 @@ NAN_MODULE_INIT(Init) {
 
 Ilk GetIlk(v8::Local<v8::Object> obj) {
   v8::Local<v8::Value> obilk = Nan::Get(obj, IlkSymbol()).ToLocalChecked();
-  if (obilk->Equals(V3Float64Ilk())) {
+
+  // This is near the point where a lookup table would be better.
+  if (obilk->Equals(ConsIlk())) {
+    return Ilk::Cons;
+  } else if (obilk->Equals(V3Float64Ilk())) {
     return Ilk::V3Float64;
   } else if (obilk->Equals(V2Float64Ilk())) {
     return Ilk::V2Float64;

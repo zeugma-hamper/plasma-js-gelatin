@@ -23,6 +23,8 @@ function main() {
   // `gelatin.Protein` objects.
   p.on('data', (protein) => {
     console.log('metabolized protein with descrips:', protein.descrips);
+    // console.log(protein.ingests);
+
     // A `Protein` has descrips, just like in C++.  We assume that `descrips`
     // are a slaw list here, which is converted to a Javascript array.
     if (protein.descrips.indexOf('hangup') >= 0) {

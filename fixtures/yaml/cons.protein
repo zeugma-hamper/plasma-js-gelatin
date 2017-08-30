@@ -1,0 +1,10 @@
+%YAML 1.1
+%TAG ! tag:oblong.com,2009:slaw/
+--- !protein
+# poke to a pool and read back with peek-descrips in "also with ingests"
+# mode... no automated test uses this.
+descrips:
+- foo
+ingests:
+  data: !cons
+    DEADBEEF: wellington

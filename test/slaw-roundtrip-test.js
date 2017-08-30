@@ -94,3 +94,23 @@ tap.test('Slaw Protein roundtrip', function(t) {
   roundTrip(t, [new Protein([], {foo: 123}), new Protein([], {bar: 456})]);
   t.end();
 });
+
+tap.test('Slaw Cons roundtrip', function(t) {
+  const Cons = require('../').Cons;
+  roundTrip(t, new Cons('foo', 123));
+  roundTrip(t,
+            new Cons('look',
+                     new Cons('ma',
+                              new Cons('i\'m',
+                                       new Cons('lisping', Slaw.nil)))));
+  t.end();
+});
+
+tap.test('Slaw Cons rejects null thoroughly', function(t) {
+  const Cons = require('../').Cons;
+  // recall that nil is not null!
+  t.throws(() => new Cons(null, null));
+  t.throws(() => new Cons(null, 'foo'));
+  t.throws(() => new Cons('bar', null));
+  t.end();
+});
