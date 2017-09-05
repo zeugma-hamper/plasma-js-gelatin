@@ -1,0 +1,5 @@
+do_check()
+{
+  npm install
+  npm test
+}

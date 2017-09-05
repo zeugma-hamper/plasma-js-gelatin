@@ -6,13 +6,15 @@ Priority: extra
 Maintainer: buildtools <buildtools@oblong.com>
 Build-Depends:
  debhelper (>= 9.0.0),
- node-gyp,
- nodejs (>= 4.2),
- nodejs-legacy,
- node-nan,
- npm,
+ libjpeg62,
+ libpng12-dev,
+ libtiff5-dev,
+# Note that nodejs6 includes npm:
+ nodejs6 (>= 6.11.2),
  oblong-plasma3.30,
  oblong-system-protist3.30,
+ pkg-config,
+ python2.7,
 Standards-Version: 3.9.8
 Homepage: https://github.com/oblong/gelatin
 XS-Testsuite: autopkgtest
@@ -23,8 +25,7 @@ Package: oblong-node-gelatin-gs3.30x0
 Architecture: any
 Depends:
  ${shlibs:Depends},
- nodejs (>= 4.2),
- nodejs-legacy,
+ nodejs6 (>= 6.11.2),
  oblong-plasma3.30,
  oblong-system-protist3.30,
 Description: libPlasma bindings/implementation for Node.js.

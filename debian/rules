@@ -12,18 +12,18 @@ export G_SPEAK_HOME
 YOBUILD=/opt/oblong/deps-64-11
 export YOBUILD
 
-SHLIBSDIR = debian/oblong-node-gelatin-gs3.30x0/usr/lib/nodejs/gelatin/build/Release
+SHLIBSDIR = debian/oblong-node-gelatin-gs3.30x0/usr/lib/node/gelatin/build/Release
 SHLIBS = gelatin.node
 
 %:
-	dh $@ --with nodejs
+	dh $@
 
 override_dh_auto_build:
-	node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yobuild_home=$(YOBUILD)
-	node-gyp build
+	node_modules/.bin/node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yobuild_home=$(YOBUILD)
+	node_modules/.bin/node-gyp build
 
 override_dh_auto_clean:
-	node-gyp clean
+	node_modules/.bin/node-gyp clean
 
 # since we're building the native libs, ignore the fallbacks
 # also have to rename .node to .so so they are detected by dh_strip dh_shlibdeps etc
