@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 # usage: g-seek.py (g_speak_home|yobuild_home)
 #
 # Seeks out a g-speak home or yobuild home and prints the requested path to
-# stdout.  If GELATIN_G_SPEAK_HOME is set in the environment, that value is used for
-# g_speak_home requests.  yobuild_home requests are served by running
+# stdout.  If GELATIN_G_SPEAK_HOME is set in the environment, that value is
+# used for g_speak_home requests.  yobuild_home requests are served by running
 # "ob-version" from the g-speak home directory.  Used by binding.gyp.
 #
 # It may be helpful to run with "GSEEK_VERBOSE" set in the environment, which
@@ -42,11 +42,9 @@ def g_speak_version_key(x):
 
 # Adapted from obi.py
 def find_g_speak_home():
-    """
-    Extract the gspeak version by hook or by crook. We'll examine the
-    GELATIN_G_SPEAK_HOME enviornment variable, and we'll even look at your files for
-    /opt/oblong/g-speakX.YY
-    """
+    """Extract the gspeak version by hook or by crook. We'll examine the
+    GELATIN_G_SPEAK_HOME enviornment variable, and we'll even look at your
+    files for /opt/oblong/g-speakX.YY"""
     g_speak_home = ""
     if 'GELATIN_G_SPEAK_HOME' in os.environ:
         debug_print('Using GELATIN_G_SPEAK_HOME from environment: {}'
@@ -69,8 +67,8 @@ def find_g_speak_home():
     if not (os.path.exists(g_speak_home)
             and os.path.isdir(g_speak_home)
             and os.path.exists(obvers_path(g_speak_home))):
-        err_print('GELATIN_G_SPEAK_HOME {0} does not exist, is not a directory, '
-                  'or is missing ob-version.'.format(g_speak_home))
+        err_print('GELATIN_G_SPEAK_HOME {0} does not exist, is not a '
+                  'directory, or is missing ob-version.'.format(g_speak_home))
         sys.exit(1)
     return g_speak_home
 
@@ -79,11 +77,11 @@ def find_yobuild_home(g_speak_home):
     # Barring TOCTOU, find_g_speak_home should have already verified that
     # ob-version exists in the g_speak_home directory.
     version_info = subprocess.check_output(obvers_path(g_speak_home))
-    pattern = re.compile('^\s*ob_yobuild_dir : (.*)')
+    pattern = re.compile(b'^\s*ob_yobuild_dir : (.*)')
     for line in version_info.splitlines():
         matchob = pattern.match(line)
         if matchob:
-            return matchob.group(1)
+            return matchob.group(1).decode('utf-8')
     err_print('Could not find ob_yobuild_dir from ob-version output:\n{}'
               .format(version_info))
     sys.exit(1)
