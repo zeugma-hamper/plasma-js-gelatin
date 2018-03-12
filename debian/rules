@@ -5,7 +5,7 @@
 #export DH_VERBOSE=1
 
 # To sense this from environment, we'd have to parse out the version number and plop it on the package names
-# Instead, encourage developers to use set-gspeak.sh if they need to change the version of g-speak the debian package builds against
+# Instead, encourage developers to use ob-set-defaults if they need to change the version of g-speak the debian package builds against
 G_SPEAK_HOME=/opt/oblong/g-speak3.30
 export G_SPEAK_HOME
 
@@ -18,12 +18,19 @@ SHLIBS = gelatin.node
 %:
 	dh $@
 
+override_dh_auto_configure:
+	npm install
+	# Funny quoting on next line is to prevent overeager search-and-replace of yo-build by ob-set-default
+	node_modules/.bin/node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yo'build'_home=$(YOBUILD)
+
 override_dh_auto_build:
-	node_modules/.bin/node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yobuild_home=$(YOBUILD)
 	node_modules/.bin/node-gyp build
 
+override_dh_auto_test:
+	npm test
+
 override_dh_auto_clean:
-	node_modules/.bin/node-gyp clean
+	if test -d node_modules; then node_modules/.bin/node-gyp clean; fi
 
 # since we're building the native libs, ignore the fallbacks
 # also have to rename .node to .so so they are detected by dh_strip dh_shlibdeps etc

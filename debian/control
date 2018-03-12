@@ -7,10 +7,12 @@ Maintainer: buildtools <buildtools@oblong.com>
 Build-Depends:
  debhelper (>= 9.0.0),
  libjpeg62,
- libpng12-dev,
+# libpng12-dev for ubuntu 16.04, libpng-dev for ubuntu 17.10 and up
+ libpng12-dev | libpng-dev,
  libtiff5-dev,
 # Note that nodejs6 includes npm:
- nodejs6 (>= 6.11.2),
+ nodejs (>=6.11.2) | nodejs6 (>= 6.11.2),
+ npm (>= 3.5.2) | nodejs6 (>= 6.11.2),
  oblong-plasma3.30,
  oblong-system-protist3.30,
  pkg-config,
@@ -22,10 +24,11 @@ Vcs-Git: https://github.com/Oblong/gelatin.git
 Vcs-Browser: https://github.com/Oblong/gelatin.git
 
 Package: oblong-node-gelatin-gs3.30x0
+Provides: oblong-gs3.30-node-gelatin
 Architecture: any
 Depends:
  ${shlibs:Depends},
- nodejs6 (>= 6.11.2),
+ nodejs (>=6.11.2) | nodejs6 (>= 6.11.2),
  oblong-plasma3.30,
  oblong-system-protist3.30,
 Description: libPlasma bindings/implementation for Node.js.
