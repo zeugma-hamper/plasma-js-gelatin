@@ -2,7 +2,9 @@
 *.debhelper.log
 *.substvars
 *.debhelper
+*.log
 debhelper-build-stamp
 files
 oblong-node-gelatin*/
+oblong-gs*-node-gelatin
 tmp/

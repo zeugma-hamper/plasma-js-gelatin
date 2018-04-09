@@ -1,5 +1,5 @@
-oblong-node-gelatin-gs3.30x0 (0.2.1-1+g46ec694) xenial; urgency=low
+oblong-gs3.30-node-gelatin (0.4) xenial; urgency=low
 
-  * Initial release
+  * New package naming convention
 
- -- buildtools <buildtools@oblong.com>  Fri, 14 Jul 2017 17:10:04 -0800
+ -- buildtools <buildtools@oblong.com>  Mon, 09 Apr 2018 08:39:30 -0700
