@@ -23,7 +23,24 @@ XS-Testsuite: autopkgtest
 Vcs-Git: https://github.com/Oblong/gelatin.git
 Vcs-Browser: https://github.com/Oblong/gelatin.git
 
+# This package was folded into the g-speak platform
+# during the g-speak 4.5 development cycle.
+# As part of the platform train, it gets a rel-4.6.1
+# tag and version number... which changes the
+# vestigal trailing zero in the package name to 4,
+# confusing downstream users.  Rather than just
+# remove the suffix, the package was renamed to
+# the new naming scheme introduced with g-speak 4.6.
+# Conflicts:, Replaces:, and Provides: headers were
+# added so installing the new package does not fail
+# if the old package was already installed.
+# See the 'clean slate' upgrade method in
+# https://wiki.debian.org/RenamingPackages
+
 Package: oblong-gs3.30-node-gelatin
+Conflicts: oblong-node-gelatin-gs3.30x0
+Replaces: oblong-node-gelatin-gs3.30x0 
+Provides: oblong-node-gelatin-gs3.30x0 
 Architecture: any
 Depends:
  ${shlibs:Depends},
