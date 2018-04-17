@@ -3,10 +3,10 @@
 
 #include "wrappers.hh"
 
-#include <array>
 #include <libLoam/c/ob-log.h>
 #include <libPlasma/c/protein.h>
 #include <libPlasma/c/slaw.h>
+#include <array>
 #include "convert.hh"
 
 namespace gelatin {
@@ -75,8 +75,11 @@ NAN_METHOD(NodeSlaw::ToString) {
 NAN_METHOD(NodeSlaw::ToValue) {
   NodeSlaw *ns = ObjectWrap::Unwrap<NodeSlaw>(info.Holder());
   bslaw slaw = ns->slaw_.Borrow();
-  v8::Local<v8::Value> js_val = slaw_to_v8(slaw).ToLocalChecked();
-  info.GetReturnValue().Set(js_val);
+  v8::MaybeLocal<v8::Value> js_val = slaw_to_v8(slaw);
+  if (js_val.IsEmpty()) {  // an exception is being thrown
+    return;
+  }
+  info.GetReturnValue().Set(js_val.ToLocalChecked());
 }
 
 NAN_GETTER(NodeSlaw::GetNil) {
@@ -166,8 +169,11 @@ NAN_GETTER(NodeProtein::GetDescrips) {
   bprotein p = np->slaw_.Borrow();
   bslaw descrips = protein_descrips(p);
 
-  v8::Local<v8::Value> js_val = slaw_to_v8(descrips).ToLocalChecked();
-  info.GetReturnValue().Set(js_val);
+  v8::MaybeLocal<v8::Value> js_val = slaw_to_v8(descrips);
+  if (js_val.IsEmpty()) {  // an exception is being thrown
+    return;
+  }
+  info.GetReturnValue().Set(js_val.ToLocalChecked());
 }
 
 NAN_GETTER(NodeProtein::GetIngests) {
@@ -175,8 +181,11 @@ NAN_GETTER(NodeProtein::GetIngests) {
   bprotein p = np->slaw_.Borrow();
   bslaw ingests = protein_ingests(p);
 
-  v8::Local<v8::Value> js_val = slaw_to_v8(ingests).ToLocalChecked();
-  info.GetReturnValue().Set(js_val);
+  v8::MaybeLocal<v8::Value> js_val = slaw_to_v8(ingests);
+  if (js_val.IsEmpty()) {  // an exception is being thrown
+    return;
+  }
+  info.GetReturnValue().Set(js_val.ToLocalChecked());
 }
 
 NAN_GETTER(NodeProtein::GetLength) {
