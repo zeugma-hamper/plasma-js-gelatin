@@ -219,7 +219,14 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       // just make every scalar number a float64.  it's what crockford would
       // want.
       float64 out;
-      if (slaw_to_float64(s, &out) < OB_OK) {
+      const ob_retort ort = slaw_to_float64(s, &out);
+      if (ort == SLAW_RANGE_ERR) {
+        SlawHandle sspew(slaw_spew_overview_to_string(s));
+        OB_LOG_ERROR(
+            "numeric slaw %s out of JS numeric range, returning undefined",
+            slaw_string_emit(sspew.Borrow()));
+        RETURN(Nan::Undefined());
+      } else if (ort < OB_OK) {
         Nan::ThrowError(
             "slaw scalar number to float64 conversion failed mysteriously "
             "(probably a bug in gelatin)");
@@ -291,6 +298,7 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
           "Missing non-scalar numeric conversion.  Please file a bug with "
           "Oblong.  Include the following string describing the slaw:\n%s",
           slaw_string_emit(str.Borrow()));
+      RETURN(Nan::Undefined());
     }
   } else if (slaw_is_string(s)) {
     RETURN(Nan::New(slaw_string_emit(s)).ToLocalChecked());
@@ -310,9 +318,13 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       Nan::MaybeLocal<v8::Value> js_key = slaw_to_v8(key);
       // If slaw_to_v8() returned an empty MaybeLocal, then it should have
       // thrown an exception too.
-      if (js_key.IsEmpty()) return {};
+      if (js_key.IsEmpty()) {
+        return {};
+      }
       Nan::MaybeLocal<v8::Value> js_val = slaw_to_v8(val);
-      if (js_val.IsEmpty()) return {};
+      if (js_val.IsEmpty()) {
+        return {};
+      }
       js_map = js_map
                    ->Set(Nan::GetCurrentContext(), js_key.ToLocalChecked(),
                          js_val.ToLocalChecked())
@@ -328,7 +340,9 @@ Nan::MaybeLocal<v8::Value> slaw_to_v8(bslaw s) {
       Nan::MaybeLocal<v8::Value> js_val = slaw_to_v8(el);
       // If slaw_to_v8() returned an empty MaybeLocal, then it should have
       // thrown an exception too.
-      if (js_val.IsEmpty()) return {};
+      if (js_val.IsEmpty()) {
+        return {};
+      }
       Nan::Set(arr, i, js_val.ToLocalChecked());
       el = slaw_list_emit_next(s, el);
       ++i;
