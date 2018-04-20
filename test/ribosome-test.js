@@ -67,3 +67,23 @@ tap.test('huge protein', (t) => {
     t.end();
   });
 });
+
+tap.test('thumbnail nested protein with out of range ingest', (t) => {
+  const fixture = loadFixture('thumbnail.protein');
+  const ribo = new Ribosome();
+  const proteins = fixture.pipe(ribo);
+  let count = 0;
+  proteins.on('data', (protein) => {
+    count++;
+    t.same(protein.descrips, ['thumbnail']);
+    const buf = protein.ingests.get('buf');
+    t.same(buf.descrips, ['%gst-buffer', 'discont', 'delta-unit']);
+    // Issue 54 - out of range unt64/int64 crashes gelatin
+    const bufIng = buf.ingests;
+    t.equal(bufIng.get('dur'), undefined);
+  });
+  proteins.on('end', () => {
+    t.equal(count, 1);
+    t.end();
+  });
+});
