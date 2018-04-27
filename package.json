@@ -1,6 +1,6 @@
 {
   "name": "gelatin",
-  "version": "0.4",
+  "version": "0.4.0",
   "description": "Bindings for g-speak's libPlasma, a message-passing framework",
   "keywords": [
     "plasma",
