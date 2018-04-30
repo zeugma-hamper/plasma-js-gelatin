@@ -12,7 +12,7 @@ g-speak used is determined this way:
 
 1. If `GELATIN_G_SPEAK_HOME` is set in the environment, use that path to look
    up g-speak.  For example, `GELATIN_G_SPEAK_HOME=/opt/oblong/g-speak3.26 npm
-   install` will build/link against g-speak 3.26.
+   install` will build/link against g-speak 3.26 installed to /opt/oblong.
 2. Otherwise, look up the most recent compatible version of g-speak in
    `/opt/oblong`.
 
@@ -41,6 +41,11 @@ At runtime, gelatin depends on:
 * oblong-system-protistX.Y
 
 where X.Y is the g-speak version used at build time.
+
+The location of `peek` and `poke` binaries are found using the `G_SPEAK_HOME`
+path computed in the [g-speak version](#g-speak-version) section.  This path
+can be overridden at runtime by setting `GELATIN_G_SPEAK_HOME` in the
+environment; useful if paths are relocated in a container or snap.
 
 ## examples
 
