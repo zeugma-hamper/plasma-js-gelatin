@@ -41,16 +41,15 @@ as a kludge, run the included `rtags-reindex.sh` script whenever you add a new
 source file to `src/` to re-index the project.  the script will `rm -rf` the build
 directory, be wary!
 
-``` bash
+```bash
 ./rtags-reindex.sh .
 ```
 
 ## style
 
-This project uses [clang-format][] for C++ code formatting and [jscs][] to
-enforce JavaScript code style.  Where possible, other style decisions
-(capitalization, naming, etc.) should roughly imitate Node's and/or v8's
-styles.
+This project uses [clang-format][] for C++ code formatting.  eslint is our 
+Javascript linter, see [.eslintrc][].  Run `npm run lint` to run the lint
+on all library and test Javascript source files.
 
 ## how to publish
 
@@ -83,7 +82,7 @@ See also
 from the NPM docs.
 
 [clang-format]: <http://clang.llvm.org/docs/ClangFormat.html>
-[jscs]: <http://jscs.info/>
+[eslintrc]: </.eslintrc.js>
 [npm-files]: <https://docs.npmjs.com/files/package.json#files>
 [before-pub]: <https://docs.npmjs.com/misc/developers#before-publishing-make-sure-your-package-installs-and-works>
 [npm-version]: <https://docs.npmjs.com/cli/version>
