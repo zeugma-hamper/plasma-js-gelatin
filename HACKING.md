@@ -67,8 +67,9 @@ Steps to publish a release:
 2. Move the tarball to a temporary location, extract it, `cd` into `package/` and
    check that `npm install` succeeds.
 3. Run [`npm version <newversion>`] to increment the version number and tag the
-   latest commit.  For ob-buildbot compatibility, the version tag looks like
-   "rel-X.Y.Z".
+   latest commit.  For ob-buildbot compatibility, the version _tag_ looks like
+   `rel-X.Y.Z`, however `<newversion>` should omit the `rel-` prefix - just 
+   `npm version X.Y.Z.`.
 4. Assuming you have git remotes `origin` (for the internal repo) and `github`
    (for the public repo), run these commands: `git push --atomic origin master
    rel-X.Y.Z` and `git push --atomic github master rel-X.Y.Z`.  This pushes the
