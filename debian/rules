@@ -21,16 +21,16 @@ SHLIBS = gelatin.node
 override_dh_auto_configure:
 	npm install
 	# Funny quoting on next line is to prevent overeager search-and-replace of yo-build by ob-set-default
-	node_modules/.bin/node-gyp configure --g_speak_home=$(G_SPEAK_HOME) --yo'build'_home=$(YOBUILD)
+	./node-gyp-wrapper configure --g_speak_home=$(G_SPEAK_HOME) --yo'build'_home=$(YOBUILD)
 
 override_dh_auto_build:
-	node_modules/.bin/node-gyp build
+	./node-gyp-wrapper build
 
 override_dh_auto_test:
 	npm test
 
 override_dh_auto_clean:
-	if test -d node_modules; then node_modules/.bin/node-gyp clean; fi
+	./node-gyp-wrapper clean
 
 # since we're building the native libs, ignore the fallbacks
 # also have to rename .node to .so so they are detected by dh_strip dh_shlibdeps etc
