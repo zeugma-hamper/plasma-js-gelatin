@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Why does this exist?  For debian packaging.  On ubu1604, gelatin depends on
+# the Oblong-packaged nodejs6 debian package, which includes npm and has its
+# node-gyp executable at /usr/lib/node_modules/npm/bin/node-gyp-bin/node-gyp. On
+# ubu1804, gelatin depends on the npm debian package, packaged upstream by
+# Ubuntu.  Ubuntu's npm package, in turn, depends on Ubuntu's node-gyp package,
+# which places the node-gyp executable in /usr/bin.
+
+set -ex
+
+PATH="/usr/lib/node_modules/npm/bin/node-gyp-bin:$PATH"
+exec node-gyp "$@"

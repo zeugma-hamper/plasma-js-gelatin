@@ -24,6 +24,7 @@
   "scripts": {
     "doc": "jsdoc -c doc/conf.json -d doc/out lib/*.js",
     "justthetest": "tap test/*.js",
+    "lint": "eslint lib/*.js test/*.js",
     "preversion": "npm test",
     "test": "node-gyp build && npm run justthetest",
     "test-debug": "node-gyp build --debug && GELATIN_DEBUG=1 npm run justthetest"
@@ -32,11 +33,10 @@
     "nan": "2.10"
   },
   "devDependencies": {
-    "node-gyp": "^3.0.3",
-    "eslint": "^3.13.0",
-    "eslint-config-google": "^0.7.1",
+    "eslint": "4.1",
+    "eslint-config-google": "0.7",
     "jsdoc": "^3.4.0",
-    "tap": "^5.4.2"
+    "tap": "^12.0.1"
   },
   "main": "lib/index.js",
   "gypfile": true,
