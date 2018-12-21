@@ -1,6 +1,6 @@
 # See https://wiki.debian.org/Javascript/Nodejs/Manual
 # for some guidance on packaging node modules
-Source: oblong-gs4.7-node-gelatin
+Source: oblong-gs4.9-node-gelatin
 Section: web
 Priority: extra
 Maintainer: buildtools <buildtools@oblong.com>
@@ -21,8 +21,8 @@ Build-Depends:
  nodejs6 (>= 6.11.2) | nodejs (>= 6.11.2),
  nodejs6 (>= 6.11.2) | npm (>= 3.5.2),
 # end nodejs6 boilerplate
- oblong-plasma4.7,
- oblong-system-protist4.7,
+ oblong-plasma4.9,
+ oblong-system-protist4.9,
  pkg-config,
  python2.7,
 Standards-Version: 3.9.8
@@ -45,18 +45,18 @@ Vcs-Browser: https://github.com/Oblong/gelatin.git
 # See the 'clean slate' upgrade method in
 # https://wiki.debian.org/RenamingPackages
 
-Package: oblong-gs4.7-node-gelatin
-Conflicts: oblong-node-gelatin-gs4.7x0
-Replaces: oblong-node-gelatin-gs4.7x0 
-Provides: oblong-node-gelatin-gs4.7x0 
+Package: oblong-gs4.9-node-gelatin
+Conflicts: oblong-node-gelatin-gs4.9x0
+Replaces: oblong-node-gelatin-gs4.9x0 
+Provides: oblong-node-gelatin-gs4.9x0 
 Architecture: any
 Depends:
  ${shlibs:Depends},
 # begin nodejs6 boilerplate
  nodejs6 (>= 6.11.2) | nodejs (>= 6.11.2),
 # end nodejs6 boilerplate
- oblong-plasma4.7,
- oblong-system-protist4.7,
+ oblong-plasma4.9,
+ oblong-system-protist4.9,
 Description: libPlasma bindings/implementation for Node.js.
  .
  Node.js is an event-based server-side javascript engine.
