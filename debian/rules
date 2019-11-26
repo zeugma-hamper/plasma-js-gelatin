@@ -6,13 +6,13 @@
 
 # To sense this from environment, we'd have to parse out the version number and plop it on the package names
 # Instead, encourage developers to use ob-set-defaults if they need to change the version of g-speak the debian package builds against
-G_SPEAK_HOME=/opt/oblong/g-speak5.3
+G_SPEAK_HOME=/opt/oblong/g-speak5.5
 export G_SPEAK_HOME
 
 YOBUILD=/opt/oblong/deps-64-13
 export YOBUILD
 
-SHLIBSDIR = debian/oblong-gs5.3-node-gelatin/usr/lib/node/gelatin/build/Release
+SHLIBSDIR = debian/oblong-gs5.5-node-gelatin/usr/lib/node/gelatin/build/Release
 SHLIBS = gelatin.node
 
 %:
