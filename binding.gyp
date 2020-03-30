@@ -3,7 +3,7 @@
     "variables": {
         "g_speak_home": "<!(./g-seek.py g_speak_home)",
         "yobuild_home": "<!(./g-seek.py yobuild_home)",
-        "pkg_config_path": "<(g_speak_home)/lib/pkgconfig:<(yobuild_home)/lib/pkgconfig",
+        "pkg_config_path": "<(g_speak_home)/lib/x86_64-linux-gnu/pkgconfig:<(yobuild_home)/lib/x86_64-linux-gnu/pkgconfig:<(g_speak_home)/lib/pkgconfig:<(yobuild_home)/lib/pkgconfig",
         "pkg_config": "PKG_CONFIG_PATH=<(pkg_config_path) pkg-config",
         "g_speak_pkgs": ["libPlasma"],
         "g_speak_include_dirs": ["<!@(<(pkg_config) <(g_speak_pkgs) --cflags-only-I | "
