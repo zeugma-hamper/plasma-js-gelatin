@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+"""Helper utility for printing g-speak and yobuild paths"""
 
-# usage: g-seek.py (g_speak_home|yobuild_home)
+# usage: g_seek.py (g_speak_home|yobuild_home)
 #
 # Seeks out a g-speak home or yobuild home and prints the requested path to
 # stdout.  If GELATIN_G_SPEAK_HOME is set in the environment, that value is
@@ -19,25 +20,29 @@ import subprocess
 import sys
 
 
-def err_print(s):
-    sys.stderr.write('{}\n'.format(s))
+def err_print(s_log):
+    """Error logging helper"""
+    sys.stderr.write('{}\n'.format(s_log))
 
 
-def debug_print(s):
+def debug_print(s_log):
+    """"Debug logging helper"""
     if 'GSEEK_VERBOSE' in os.environ:
-        me = sys.argv[0]
-        sys.stderr.write('{}: {}\n'.format(me, s))
+        myself = sys.argv[0]
+        sys.stderr.write('{}: {}\n'.format(myself, s_log))
         sys.stderr.flush()
 
 
 def obvers_path(g_speak_home):
+    """Assembles the path for the ob-version executable"""
     return os.path.join(g_speak_home, 'bin', 'ob-version')
 
 
-def g_speak_version_key(x):
-    v = os.path.split(x)[1]
-    v = v.split('g-speak')[1]
-    return StrictVersion(v)
+def g_speak_version_key(path):
+    """Parses out the g-speak version"""
+    val = os.path.split(path)[1]
+    val = val.split('g-speak')[1]
+    return StrictVersion(val)
 
 
 # Adapted from obi.py
@@ -74,10 +79,11 @@ def find_g_speak_home():
 
 
 def find_yobuild_home(g_speak_home):
+    """Returns the yobuild path or exits with failure"""
     # Barring TOCTOU, find_g_speak_home should have already verified that
     # ob-version exists in the g_speak_home directory.
     version_info = subprocess.check_output(obvers_path(g_speak_home))
-    pattern = re.compile(b'^\s*ob_yobuild_dir : (.*)')
+    pattern = re.compile(br'^\s*ob_yobuild_dir : (.*)')
     for line in version_info.splitlines():
         matchob = pattern.match(line)
         if matchob:
@@ -88,21 +94,22 @@ def find_yobuild_home(g_speak_home):
 
 
 def usage():
+    """Prints out command line usage and exits with failure"""
     err_print('usage: {} (g_speak_home|yobuild_home)'
               .format(sys.argv[0]))
     sys.exit(1)
 
 
 if __name__ == '__main__':
-    g_speak_home = find_g_speak_home()
-    yobuild_home = find_yobuild_home(g_speak_home)
+    GSPEAK_HOME = find_g_speak_home()
+    YOBUILD_HOME = find_yobuild_home(GSPEAK_HOME)
 
     if len(sys.argv) < 2:
         usage()
 
     if sys.argv[1] == 'g_speak_home':
-        print(g_speak_home)
+        print(GSPEAK_HOME)
     elif sys.argv[1] == 'yobuild_home':
-        print(yobuild_home)
+        print(YOBUILD_HOME)
     else:
         usage()

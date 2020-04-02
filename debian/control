@@ -24,7 +24,9 @@ Build-Depends:
  oblong-plasma5.5,
  oblong-system-protist5.5,
  pkg-config,
- python2.7,
+ python3,
+# FIXME: change to python3-dev once node-gyp is ported to python3?
+ python-dev,
 Standards-Version: 3.9.8
 Homepage: https://github.com/oblong/gelatin
 XS-Testsuite: autopkgtest

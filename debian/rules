@@ -19,6 +19,7 @@ SHLIBS = gelatin.node
 	dh $@
 
 override_dh_auto_configure:
+	npm install node-gyp --python=python3
 	npm install
 	# Funny quoting on next line is to prevent overeager search-and-replace of yo-build by ob-set-default
 	./node-gyp-wrapper configure --g_speak_home=$(G_SPEAK_HOME) --yo'build'_home=$(YOBUILD)
