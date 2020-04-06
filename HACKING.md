@@ -3,7 +3,7 @@
 ## build
 
 See the note about "g-speak-version" under the "usage" section above.  Consult
-g-seek.py if things get rocky.
+g_seek.py if things get rocky.
 
 ``` bash
 $ npm install -g node-gyp

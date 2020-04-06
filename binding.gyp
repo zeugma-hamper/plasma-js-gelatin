@@ -1,8 +1,8 @@
 # -*- mode: python; -*-
 {
     "variables": {
-        "g_speak_home": "<!(./g-seek.py g_speak_home)",
-        "yobuild_home": "<!(./g-seek.py yobuild_home)",
+        "g_speak_home": "<!(./g_seek.py g_speak_home)",
+        "yobuild_home": "<!(./g_seek.py yobuild_home)",
         "pkg_config_path": "<(g_speak_home)/lib/x86_64-linux-gnu/pkgconfig:<(yobuild_home)/lib/x86_64-linux-gnu/pkgconfig:<(g_speak_home)/lib/pkgconfig:<(yobuild_home)/lib/pkgconfig",
         "pkg_config": "PKG_CONFIG_PATH=<(pkg_config_path) pkg-config",
         "g_speak_pkgs": ["libPlasma"],

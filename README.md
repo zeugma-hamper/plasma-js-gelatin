@@ -20,7 +20,7 @@ g-speak used is determined this way:
 
 gelatin has these dependencies at build/`npm install` time:
 
-* python2.7, for [node-gyp](https://github.com/nodejs/node-gyp#installation)
+* python3 and python2.7, for [node-gyp](https://github.com/nodejs/node-gyp#installation)
 * oblong-loamX.Y
 * oblong-plasmaX.Y
 
