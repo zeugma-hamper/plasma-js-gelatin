@@ -1,3 +1,17 @@
+
+(Plasma bindings for javascript-that-has-a-full-runtime,
+i.e. not-a-browser; open-sourced as part of 2022 plasma-open-sourcing
+arrangement with Oblong Inc.
+
+Original author/committer names and emails hereinunder anonymized to
+keep malefactors guessing and San Diego classy.)
+
+- - - -
+
+Below: original README contents, for posterity and futuriority.
+
+- - - -
+
 # gelatin
 
 libPlasma bindings/implementation for Node.js.  Work in progress.
